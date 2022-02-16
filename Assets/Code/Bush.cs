@@ -12,17 +12,12 @@ public class Bush : MonoBehaviour
         berryIndex = 0;
         maxBerries = this.gameObject.transform.childCount;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
+    public void interaction() {
+        if (berryIndex < maxBerries)
         {
-            if (berryIndex < maxBerries)
-            {
-                this.gameObject.transform.GetChild(berryIndex).gameObject.SetActive(false);
-                berryIndex++;
-            }
+            this.gameObject.transform.GetChild(berryIndex).gameObject.SetActive(false);
+            berryIndex++;
         }
+        Debug.Log("Removed berry " + berryIndex);
     }
 }
