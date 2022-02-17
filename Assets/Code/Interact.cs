@@ -13,5 +13,9 @@ public class Interact : MonoBehaviour
             var item = this.gameObject.GetComponent<Mushroom>();
             item.interaction();
         }
+        else if (tag == "Tree") {
+            var item = this.gameObject.GetComponent<Tree>();
+            item.interaction();
+        }
     }
 }

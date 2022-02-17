@@ -7,6 +7,9 @@ TagManager:
   - Berry
   - Bush
   - Mushroom
+  - FoxChild
+  - Apple
+  - Tree
   layers:
   - Default
   - TransparentFX

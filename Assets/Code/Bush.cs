@@ -17,7 +17,9 @@ public class Bush : MonoBehaviour
         {
             this.gameObject.transform.GetChild(berryIndex).gameObject.SetActive(false);
             berryIndex++;
+            PublicVars.berryCount++;
         }
         Debug.Log("Removed berry " + berryIndex);
+       
     }
 }
