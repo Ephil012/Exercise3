@@ -106,12 +106,12 @@ public class PlayerUI : MonoBehaviour
     {
         timer += Time.deltaTime;
         if (timer > interval && foxAlive) {
-            PublicVars.health -= deplete * 5;
+            PublicVars.health -= deplete * 100;
             timer = 0f;
         }
         if(PublicVars.health <=0){
             foxAlive = false;
-            // restartButton.SetActive(true);
+            restartButton.SetActive(true);
             reticle.enabled = false;
             lostUI.enabled = true;
             
@@ -121,7 +121,7 @@ public class PlayerUI : MonoBehaviour
         }
 
         if(PublicVars.dayCount > 5) {
-            // restartButton.SetActive(true);
+            restartButton.SetActive(true);
             wonUI.enabled = true;
             foxAlive = false;
             Cursor.lockState = CursorLockMode.Confined;
