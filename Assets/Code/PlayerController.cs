@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
             audioList[1].Pause();
         } */
 
-        rotation.x = Mathf.Clamp(rotation.x , -30, 30); //never go past -30 and 30 degrees
+        rotation.x = Mathf.Clamp(rotation.x , -130, 130); //never go past -130 and 130 degrees
         camTrans.localEulerAngles = new Vector3(rotation.x, 0, 0) * lookSpeed;
         transform.eulerAngles = new Vector3( 0, rotation.y,  0) * lookSpeed;
         
