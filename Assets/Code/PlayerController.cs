@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public float groundCheckDistance;
     bool grounded = false;
 
-    private float raycastDist = 50;
+    private float raycastDist = 5;
     private bool reticleTarget = false;
     public Image reticle;
 
