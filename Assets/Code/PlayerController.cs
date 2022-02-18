@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
 
     public AudioClip grab;
     public AudioClip walk;
-    AudioSource[] audioList;
+    AudioSource _audiosource;
 
     public bool activeMovement = true;
 
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         _rigidbody = GetComponent<Rigidbody>();
-        audioList = GetComponents<AudioSource>();
+        _audiosource = GetComponent<AudioSource>();
     }
 
     void FixedUpdate(){
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
                     if (interact != null) {
                         var result = interact.onInteract(item.tag);
                         if (result) {
-                            audioList[0].PlayOneShot(grab);
+                            _audiosource.PlayOneShot(grab);
                         }
                     }
 
@@ -100,13 +100,18 @@ public class PlayerController : MonoBehaviour
         {
             //Cast a ray and if the retical is not already red change its color
             var item = hit.collider.gameObject;
-            if (!reticleTarget && (item.tag == "Bush" || item.tag == "Mushroom"))
+            if (!reticleTarget && (item.tag == "Bush" || item.tag == "Mushroom" || item.tag == "Tree"))
             {
                 reticleTarget = true; //This bool keeps the color from updating if there is no change
+                reticle.color = Color.red;
+            } else if (reticleTarget && !(item.tag == "Bush" || item.tag == "Mushroom" || item.tag == "Tree")) {
+                reticle.color = Color.white;
+                reticleTarget = false;
             }
         }
         else if (reticleTarget) //if no target is hit and the reticle is active then change it back to white
         {
+            reticle.color = Color.white;
             reticleTarget = false;
         }
     }
