@@ -12,14 +12,14 @@ public class Tree : MonoBehaviour
         appleIndex = 0;
         maxApples = this.gameObject.transform.childCount;
     }
-    public void interaction() {
+    public bool interaction() {
         if (appleIndex < maxApples)
         {
             this.gameObject.transform.GetChild(appleIndex).gameObject.SetActive(false);
             appleIndex++;
             PublicVars.appleCount++;
-        }
-        Debug.Log("Removed apple " + appleIndex);
-    
+            return true;
+        }   
+        return false;
     }
 }

@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class Interact : MonoBehaviour
 {
-    public void onInteract(string tag)
+    public bool onInteract(string tag)
     {
+        var result = false;
         if(tag == "Bush") {
             var item = this.gameObject.GetComponent<Bush>();
-            item.interaction();
+            result = item.interaction();
         } else if (tag == "Mushroom") {
             var item = this.gameObject.GetComponent<Mushroom>();
-            item.interaction();
+            result = item.interaction();
+            Debug.Log(result);
         } else if (tag == "Tree") {
             var item = this.gameObject.GetComponent<Tree>();
-            item.interaction();
+            result = item.interaction();
         }
+        return result;
     }
 }

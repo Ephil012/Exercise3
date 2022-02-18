@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Mushroom : MonoBehaviour
 {
-    public void interaction() {
-        this.gameObject.SetActive(false);
+    public bool interaction() {
         PublicVars.mushroomCount++;
-        print("Mush count: " + PublicVars.mushroomCount);
+        this.gameObject.SetActive(false);
+        return true;
     }
-
 }

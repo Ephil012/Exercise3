@@ -55,10 +55,12 @@ public class PlayerController : MonoBehaviour
             {
                 var item = hit.collider.gameObject;
                 if (item.tag == "Bush" || item.tag == "Mushroom" || item.tag == "Tree") {
-                    audioList[0].PlayOneShot(grab);
                     var interact = item.GetComponent<Interact>();
                     if (interact != null) {
-                        interact.onInteract(item.tag);
+                        var result = interact.onInteract(item.tag);
+                        if (result) {
+                            audioList[0].PlayOneShot(grab);
+                        }
                     }
 
                 }

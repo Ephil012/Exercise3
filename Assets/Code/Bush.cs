@@ -12,14 +12,14 @@ public class Bush : MonoBehaviour
         berryIndex = 0;
         maxBerries = this.gameObject.transform.childCount;
     }
-    public void interaction() {
+    public bool interaction() {
         if (berryIndex < maxBerries)
         {
             this.gameObject.transform.GetChild(berryIndex).gameObject.SetActive(false);
             berryIndex++;
             PublicVars.berryCount++;
+            return true;
         }
-        Debug.Log("Removed berry " + berryIndex);
-       
+        return false;
     }
 }
