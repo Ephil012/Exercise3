@@ -40,6 +40,10 @@ public class PlayerUI : MonoBehaviour
             PublicVars.mushroomCount -= mushroomsNeeded;
             PublicVars.health += mushroomsNeeded * PublicVars.mushroomHealth;
             remainingHealth = 100 - PublicVars.health;
+        } else {
+            PublicVars.health += PublicVars.mushroomCount * PublicVars.mushroomHealth;
+            PublicVars.mushroomCount = 0;
+            remainingHealth = 100 - PublicVars.health;
         }
 
         var applesNeeded = (int) remainingHealth / PublicVars.appleHealth;
@@ -47,12 +51,20 @@ public class PlayerUI : MonoBehaviour
             PublicVars.appleCount -= applesNeeded;
             PublicVars.health += applesNeeded * PublicVars.appleHealth;
             remainingHealth = 100 - PublicVars.health;
+        } else {
+            PublicVars.health += PublicVars.appleCount * PublicVars.appleHealth;
+            PublicVars.appleCount = 0;
+            remainingHealth = 100 - PublicVars.health;
         }
 
         var berriesNeeded = (int) remainingHealth / PublicVars.berryHealth;
         if (berriesNeeded <= PublicVars.berryCount) {
             PublicVars.berryCount -= berriesNeeded;
             PublicVars.health += berriesNeeded * PublicVars.berryHealth;
+            remainingHealth = 100 - PublicVars.health;
+        } else {
+            PublicVars.health += PublicVars.berryCount * PublicVars.berryHealth;
+            PublicVars.berryCount = 0;
             remainingHealth = 100 - PublicVars.health;
         }
     }
