@@ -21,47 +21,72 @@ public class PlayerController : MonoBehaviour
     private bool reticleTarget = false;
     public Image reticle;
 
+    public AudioClip grab;
+    public AudioClip walk;
+    AudioSource[] audioList;
+
+    public bool activeMovement = true;
+
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         _rigidbody = GetComponent<Rigidbody>();
+        audioList = GetComponents<AudioSource>();
     }
 
     void FixedUpdate(){
-        recticleRun();
-        Vector3 moveDirection = transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal");
-        moveDirection *= moveSpeed;
-        moveDirection.y = _rigidbody.velocity.y;
-        _rigidbody.velocity = moveDirection;
+        if(activeMovement) {
+            recticleRun();
+            Vector3 moveDirection = transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal");
+            moveDirection *= moveSpeed;
+            moveDirection.y = _rigidbody.velocity.y;
+            _rigidbody.velocity = moveDirection;
 
-        grounded = Physics.CheckSphere(footTrans.position , groundCheckDistance, groundLayer);
-
+            grounded = Physics.CheckSphere(footTrans.position , groundCheckDistance, groundLayer);
+        }
     }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E)) {
+        if (Input.GetKeyDown(KeyCode.E) && activeMovement) {
             RaycastHit hit;
             if (Physics.Raycast(camTrans.position, camTrans.forward, out hit, raycastDist))
             {
                 var item = hit.collider.gameObject;
-                if (item.tag == "Bush" || item.tag == "Mushroom") {
+                if (item.tag == "Bush" || item.tag == "Mushroom" || item.tag == "Tree") {
+                    audioList[0].PlayOneShot(grab);
                     var interact = item.GetComponent<Interact>();
                     if (interact != null) {
                         interact.onInteract(item.tag);
                     }
+
                 }
             }
         }
 
-        rotation.y += Input.GetAxis("Mouse X") * 2; // mouse x movement
-        rotation.x -= Input.GetAxis("Mouse Y");
+        if (activeMovement) {
+            rotation.y += Input.GetAxis("Mouse X") * 2; // mouse x movement
+            rotation.x -= Input.GetAxis("Mouse Y");
+        } else {
+            rotation.y = 0;
+            rotation.x = 0;
+        }
+        /*
+        if(Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+        {
+            audioList[1].clip = walk;
+            audioList[1].Play();
+        } else {
+            audioList[1].clip = walk;
+            audioList[1].Pause();
+        } */
+
         rotation.x = Mathf.Clamp(rotation.x , -30, 30); //never go past -30 and 30 degrees
         camTrans.localEulerAngles = new Vector3(rotation.x, 0, 0) * lookSpeed;
         transform.eulerAngles = new Vector3( 0, rotation.y,  0) * lookSpeed;
         
-        if(grounded && Input.GetButtonDown("Jump")){
+        if(grounded && Input.GetButtonDown("Jump") && activeMovement){
             _rigidbody.AddForce(new Vector3(0, jumpForce, 0));
         }
     }
