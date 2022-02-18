@@ -13,7 +13,6 @@ public class Interact : MonoBehaviour
         } else if (tag == "Mushroom") {
             var item = this.gameObject.GetComponent<Mushroom>();
             result = item.interaction();
-            Debug.Log(result);
         } else if (tag == "Tree") {
             var item = this.gameObject.GetComponent<Tree>();
             result = item.interaction();

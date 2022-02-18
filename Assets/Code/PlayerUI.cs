@@ -23,10 +23,31 @@ public class PlayerUI : MonoBehaviour
     public GameObject restartButton;
 
     public AudioClip eating;
+    public AudioClip win;
+    public AudioClip lose;
     AudioSource _audiosource;
+
+    bool over = false;
 
     private void Start()
     {
+        foxAlive = true;
+        restartButton.SetActive(false);
+        wonUI.enabled = false;
+        lostUI.enabled = false;
+        reticle.enabled = true;
+        over = false;
+
+        PublicVars.health = 100;
+        PublicVars.dayCount = 1;
+        PublicVars.berryCount = 0;
+        PublicVars.mushroomCount = 0;
+        PublicVars.appleCount = 0;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        this.gameObject.GetComponent<PlayerController>().activeMovement = true;
+        this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+
         healthUI.text = "Children Health: " + PublicVars.health;
         berryUI.text = "Berry Count: " + PublicVars.berryCount;
         appleUI.text = "Apple Count: " + PublicVars.appleCount;
@@ -104,37 +125,50 @@ public class PlayerUI : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer > interval && foxAlive) {
-            PublicVars.health -= deplete * 100;
-            timer = 0f;
+        if (!over) {
+            timer += Time.deltaTime;
+            if (timer > interval && foxAlive) {
+                var newHealth = PublicVars.health - deplete * 10;
+                if (newHealth < 0) {
+                    newHealth = 0;
+                }
+                PublicVars.health = newHealth;
+                timer = 0f;
+            }
+
+            if(PublicVars.health <= 0){
+                _audiosource.PlayOneShot(lose);
+                foxAlive = false;
+                restartButton.SetActive(true);
+                reticle.enabled = false;
+                lostUI.enabled = true;
+                over = true;
+                
+                Cursor.lockState = CursorLockMode.None;
+                this.gameObject.GetComponent<PlayerController>().activeMovement = false;
+                this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            }
+
+            if(PublicVars.dayCount > 5) {
+                _audiosource.PlayOneShot(win);
+                restartButton.SetActive(true);
+                wonUI.enabled = true;
+                reticle.enabled = false;
+                foxAlive = false;
+                over = true;
+
+                Cursor.lockState = CursorLockMode.None;
+                this.gameObject.GetComponent<PlayerController>().activeMovement = false;
+                this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            }
+
+            mushroomUI.text = "Mushroom Count: " + PublicVars.mushroomCount;
+            berryUI.text = "Berry Count: " + PublicVars.berryCount;
+            appleUI.text = "Apple Count: " + PublicVars.appleCount;
+
+
+            healthUI.text = "Children Health: " + PublicVars.health;
+            dayUI.text = "Day: " + PublicVars.dayCount;
         }
-        if(PublicVars.health <=0){
-            foxAlive = false;
-            restartButton.SetActive(true);
-            reticle.enabled = false;
-            lostUI.enabled = true;
-            
-            Cursor.lockState = CursorLockMode.None;
-            this.gameObject.GetComponent<PlayerController>().activeMovement = false;
-            this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        }
-
-        if(PublicVars.dayCount > 5) {
-            restartButton.SetActive(true);
-            wonUI.enabled = true;
-            foxAlive = false;
-            Cursor.lockState = CursorLockMode.Confined;
-            this.gameObject.GetComponent<PlayerController>().activeMovement = false;
-            this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        }
-
-        mushroomUI.text = "Mushroom Count: " + PublicVars.mushroomCount;
-        berryUI.text = "Berry Count: " + PublicVars.berryCount;
-        appleUI.text = "Apple Count: " + PublicVars.appleCount;
-
-
-        healthUI.text = "Children Health: " + PublicVars.health;
-        dayUI.text = "Day: " + PublicVars.dayCount;
     }
 }
